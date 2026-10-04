@@ -71,6 +71,20 @@
       document.querySelector("#saveBtn").textContent = "영화 수정";
     }
 
+    function delMovie(id) {
+      if (confirm("정말 삭제하시겠습니까?")) {
+        movies = movies.filter(m => m.id !== id);
+
+        if (editId === id) {
+          editId = null;
+          document.querySelector("#saveBtn").textContent = "영화 추가";
+          document.querySelector("#movieForm").reset();
+        }
+
+        render();
+      }
+    }
+
     window.addEventListener("load", function() {
       const movieForm = document.querySelector("#movieForm");
       const title = document.querySelector("#title");
@@ -153,25 +167,7 @@
 
   <div>
     <h3>영화 목록</h3>
-    <ol id="list">
-      <li>
-        인터스텔라 | 크리스토퍼 놀란 | SF | 9.5점
-        <button type="button">수정</button>
-        <button type="button">삭제</button>
-      </li>
-
-      <li>
-        기생충 | 봉준호 | 드라마 | 8.6점
-        <button type="button">수정</button>
-        <button type="button">삭제</button>
-      </li>
-
-      <li>
-        라라랜드 | 데이미언 셔젤 | 로맨스/뮤지컬 | 8.9점
-        <button type="button">수정</button>
-        <button type="button">삭제</button>
-      </li>
-    </ol>
+    <ol id="list"></ol>
   </div>
 </body>
 </html>
