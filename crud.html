@@ -48,6 +48,9 @@
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "삭제";
+        delBtn.addEventListener("click", function() {
+          delMovie(movie.id);
+        });
 
         li.appendChild(editBtn);
         li.appendChild(document.createTextNode(" "));
@@ -97,6 +100,24 @@
       movieForm.addEventListener("submit", function(e) {
         e.preventDefault();
 
+        if(title.value.trim() === ""){
+            alert("영화 제목을 입력해 주세요.");
+            title.focus();
+            return;
+        }
+
+        if(director.value.trim() === ""){
+            alert("영화 감독을 입력해 주세요.");
+            director.focus();
+            return;
+        }
+
+        if(genre.value === ""){
+            alert("영화 장르를 선택해 주세요.");
+            genre.focus();
+            return;
+        }
+
         if (editId === null) {
           const newMovie = {
             id: movies.length + 1,
@@ -129,23 +150,24 @@
     });
   </script>
 </head>
+
 <body>
   <h1>Movie Management</h1>
 
   <form id="movieForm">
     <div>
       <label for="title">제목 : </label>
-      <input type="text" id="title" placeholder="영화 제목 입력">
+      <input type="text" id="title" placeholder="영화 제목 입력" required>
     </div>
 
     <div>
       <label for="director">감독 : </label>
-      <input type="text" id="director" placeholder="감독 이름 입력">
+      <input type="text" id="director" placeholder="감독 이름 입력" required>
     </div>
 
     <div>
       <label for="genre">장르 : </label>
-      <select id="genre">
+      <select id="genre" required>
         <option value="">-- 장르 선택 --</option>
         <option value="SF">SF</option>
         <option value="드라마">드라마</option>
@@ -157,7 +179,7 @@
 
     <div>
       <label for="rating">평점 : </label>
-      <input type="number" id="rating" step="0.1" min="0" max="10" placeholder="9.0">
+      <input type="number" id="rating" step="0.1" min="0" max="10" placeholder="9.0" required>
     </div>
 
     <button type="submit" id="saveBtn">영화 추가</button>
