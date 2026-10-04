@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function delFruit(e){
+            e.target.parentElement.remove();
+        }
+
+        window.addEventListener("load", function(){
+            const fruit = document.querySelector("#fruit");
+            const addbtn = document.querySelector("#addbtn");
+            const list = document.querySelector("#list");
+
+            addbtn.addEventListener("click", function(){
+                const flist = fruit.value.split(",");
+                for(const one of flist){
+                //for(let i=0; i<flist.length; i++){
+                    const li = document.createElement("li");
+                    li.textContent = one + " ";
+                    list.appendChild(li);
+
+                    const btn = document.createElement("button");
+                    btn.textContent="삭제";
+                    li.appendChild(btn);
+                    btn.addEventListener("click", delFruit);
+                }
+
+                fruit.value = "";
+                fruit.focus();
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="text" id="fruit" placeholder="과일을 입력하세요">
+    <button id="addbtn">추가</button>
+    <ul id="list"></ul>
+</body>
+</html>
