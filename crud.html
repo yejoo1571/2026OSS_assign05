@@ -1,76 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie Management Service</title>
-
-  <script>
-    let movies = [
-        {
-            id: 1,
-            title: "인터스텔라",
-            director: "크리스토퍼 놀란",
-            genre: "SF",
-            rating: 9.5
-        },
-        {
-            id: 2,
-            title: "기생충",
-            director: "봉준호",
-            genre: "드라마",
-            rating: 8.6
-        },
-        {
-            id: 3,
-            title: "라라랜드",
-            director: "데이미언 셔젤",
-            genre: "로맨스/뮤지컬",
-            rating: 8.9
-        }
-    ];
-    let nextId = 4;
-
-    function render() {
-      const list = document.querySelector("#list");
-      list.innerHTML = "";
-
-      movies.forEach(function(movie) {
-        const li = document.createElement("li");
-        li.textContent = `${movie.title} | ${movie.director} | ${movie.genre} | ${movie.rating}점 `;
-
-        li.appendChild(document.createTextNode(" "));
-        list.appendChild(li);
-      });
-    }
-
-    window.addEventListener("load", function() {
-      const movieForm = document.querySelector("#movieForm");
-      const title = document.querySelector("#title");
-      const director = document.querySelector("#director");
-      const genre = document.querySelector("#genre");
-      const rating = document.querySelector("#rating");
-
-      render();
-
-      movieForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-
-        const newMovie = {
-        id: nextId++,
-        title: title.value,
-        director: director.value,
-        genre: genre.value,
-        rating: parseFloat(rating.value)
-        };
-        movies.push(newMovie);
-
-        render();
-        resetFormState();
-        title.focus();
-      });
-    });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
   <h1>Movie Management</h1>
@@ -80,10 +13,12 @@
       <label for="title">제목 : </label>
       <input type="text" id="title" placeholder="영화 제목 입력">
     </div>
+
     <div>
       <label for="director">감독 : </label>
       <input type="text" id="director" placeholder="감독 이름 입력">
     </div>
+
     <div>
       <label for="genre">장르 : </label>
       <select id="genre">
@@ -95,20 +30,38 @@
         <option value="스릴러">스릴러</option>
       </select>
     </div>
+
     <div>
       <label for="rating">평점 : </label>
       <input type="number" id="rating" step="0.1" min="0" max="10" placeholder="9.0">
     </div>
 
     <button type="submit" id="saveBtn">영화 추가</button>
-    <button type="button" id="cancelBtn" style="display: none;">취소</button>
   </form>
 
   <hr>
 
   <div>
     <h3>영화 목록</h3>
-    <ol id="list"></ol>
+    <ol id="list">
+      <li>
+        인터스텔라 | 크리스토퍼 놀란 | SF | 9.5점
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+      </li>
+
+      <li>
+        기생충 | 봉준호 | 드라마 | 8.6점
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+      </li>
+
+      <li>
+        라라랜드 | 데이미언 셔젤 | 로맨스/뮤지컬 | 8.9점
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+      </li>
+    </ol>
   </div>
 </body>
 </html>
