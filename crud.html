@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Management Service</title>
+
+  <script>
+    let movies = [
+        {
+            id: 1,
+            title: "인터스텔라",
+            director: "크리스토퍼 놀란",
+            genre: "SF",
+            rating: 9.5
+        },
+        {
+            id: 2,
+            title: "기생충",
+            director: "봉준호",
+            genre: "드라마",
+            rating: 8.6
+        },
+        {
+            id: 3,
+            title: "라라랜드",
+            director: "데이미언 셔젤",
+            genre: "로맨스/뮤지컬",
+            rating: 8.9
+        }
+    ];
+    let nextId = 4;
+    let editId = null;
+
+    function render() {
+      const list = document.querySelector("#list");
+      list.innerHTML = "";
+
+      movies.forEach(function(movie) {
+        const li = document.createElement("li");
+        li.textContent = `${movie.title} | ${movie.director} | ${movie.genre} | ${movie.rating}점 `;
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "수정";
+        editBtn.addEventListener("click", function() {
+          editMovie(movie.id);
+        });
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "삭제";
+        delBtn.addEventListener("click", function() {
+          delMovie(movie.id);
+        });
+
+        li.appendChild(editBtn);
+        li.appendChild(document.createTextNode(" "));
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+    }
+
+    function editMovie(id) {
+      const movie = movies.find(m => m.id === id);
+      if (!movie) return;
+
+      document.querySelector("#title").value = movie.title;
+      document.querySelector("#director").value = movie.director;
+      document.querySelector("#genre").value = movie.genre;
+      document.querySelector("#rating").value = movie.rating;
+
+      editId = id;
+
+      document.querySelector("#saveBtn").textContent = "영화 수정";
+      document.querySelector("#cancelBtn").style.display = "inline";
+    }
+
+    function delMovie(id) {
+      if (confirm("정말 삭제하시겠습니까?")) {
+        movies = movies.filter(m => m.id !== id);
+        
+        if (editId === id) {
+          resetFormState();
+        }
+
+        render();
+      }
+    }
+
+    function resetFormState() {
+      const movieForm = document.querySelector("#movieForm");
+      const saveBtn = document.querySelector("#saveBtn");
+      const cancelBtn = document.querySelector("#cancelBtn");
+
+      editId = null;
+      movieForm.reset();
+      saveBtn.textContent = "영화 추가";
+      cancelBtn.style.display = "none";
+    }
+
+    window.addEventListener("load", function() {
+      const movieForm = document.querySelector("#movieForm");
+      const title = document.querySelector("#title");
+      const director = document.querySelector("#director");
+      const genre = document.querySelector("#genre");
+      const rating = document.querySelector("#rating");
+      const cancelBtn = document.querySelector("#cancelBtn");
+
+      render();
+
+      movieForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        if(title.value.trim() === ""){
+            alert("영화 제목을 입력해 주세요.");
+            title.focus();
+            return;
+        }
+
+        if(director.value.trim() === ""){
+            alert("영화 감독을 입력해 주세요.");
+            director.focus();
+            return;
+        }
+
+        if(genre.value === ""){
+            alert("영화 장르를 선택해 주세요.");
+            genre.focus();
+            return;
+        }
+
+        if (editId === null) {
+          const newMovie = {
+            id: nextId++,
+            title: title.value,
+            director: director.value,
+            genre: genre.value,
+            rating: parseFloat(rating.value)
+          };
+          movies.push(newMovie);
+        } else {
+          const movie = movies.find(m => m.id === editId);
+          if (movie) {
+            movie.title = title.value;
+            movie.director = director.value;
+            movie.genre = genre.value;
+            movie.rating = parseFloat(rating.value);
+          }
+        }
+
+        render();
+        resetFormState();
+        title.focus();
+      });
+
+      cancelBtn.addEventListener("click", function() {
+        resetFormState();
+        title.focus();
+      });
+    });
+  </script>
+
+  <style>
+    h1, h3{
+        text-align: center;
+    }
+
+    #saveBtn:hover{
+        background-color: blue;
+        color: white;
+    }
+
+    #list li button:hover {
+        background-color: red;
+        color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Movie Management</h1>
+
+  <form id="movieForm">
+    <div>
+      <label for="title">제목 : </label>
+      <input type="text" id="title" placeholder="영화 제목 입력" required>
+    </div>
+    <div>
+      <label for="director">감독 : </label>
+      <input type="text" id="director" placeholder="감독 이름 입력" required>
+    </div>
+    <div>
+      <label for="genre">장르 : </label>
+      <select id="genre" required>
+        <option value="">-- 장르 선택 --</option>
+        <option value="SF">SF</option>
+        <option value="드라마">드라마</option>
+        <option value="로맨스/뮤지컬">로맨스/뮤지컬</option>
+        <option value="액션">액션</option>
+        <option value="스릴러">스릴러</option>
+      </select>
+    </div>
+    <div>
+      <label for="rating">평점 : </label>
+      <input type="number" id="rating" step="0.1" min="0" max="10" placeholder="9.0" required>
+    </div>
+
+    <button type="submit" id="saveBtn">영화 추가</button>
+    <button type="button" id="cancelBtn" style="display: none;">취소</button>
+  </form>
+
+  <hr>
+
+  <div>
+    <h3>영화 목록</h3>
+    <ol id="list"></ol>
+  </div>
+</body>
+</html>
