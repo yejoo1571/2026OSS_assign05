@@ -51,6 +51,34 @@
         list.appendChild(li);
       });
     }
+
+    window.addEventListener("load", function() {
+      const movieForm = document.querySelector("#movieForm");
+      const title = document.querySelector("#title");
+      const director = document.querySelector("#director");
+      const genre = document.querySelector("#genre");
+      const rating = document.querySelector("#rating");
+
+      render();
+
+      movieForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const newMovie = {
+          id: movies.length + 1,
+          title: title.value,
+          director: director.value,
+          genre: genre.value,
+          rating: parseFloat(rating.value)
+        };
+
+        movies.push(newMovie);
+
+        render();
+        movieForm.reset();
+        title.focus();
+      });
+    });
   </script>
 </head>
 <body>
