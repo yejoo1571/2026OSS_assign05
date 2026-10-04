@@ -29,6 +29,28 @@
           rating: 8.9
       }
     ];
+
+    function render() {
+      const list = document.querySelector("#list");
+      list.innerHTML = "";
+
+      movies.forEach(function(movie) {
+        const li = document.createElement("li");
+        li.textContent = `${movie.title} | ${movie.director} | ${movie.genre} | ${movie.rating}점 `;
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "수정";
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "삭제";
+
+        li.appendChild(editBtn);
+        li.appendChild(document.createTextNode(" "));
+        li.appendChild(delBtn);
+
+        list.appendChild(li);
+      });
+    }
   </script>
 </head>
 <body>
