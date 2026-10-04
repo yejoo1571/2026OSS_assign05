@@ -21,6 +21,11 @@
                     const li = document.createElement("li");
                     li.textContent = one + " ";
                     list.appendChild(li);
+
+                    const btn = document.createElement("button");
+                    btn.textContent="삭제";
+                    li.appendChild(btn);
+                    btn.addEventListener("click", delFruit);
                 }
 
                 fruit.value = "";
