@@ -30,6 +30,8 @@
       }
     ];
 
+    let editId = null;
+
     function render() {
       const list = document.querySelector("#list");
       list.innerHTML = "";
@@ -40,6 +42,9 @@
 
         const editBtn = document.createElement("button");
         editBtn.textContent = "수정";
+        editBtn.addEventListener("click", function() {
+          editMovie(movie.id);
+        });
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "삭제";
@@ -50,6 +55,20 @@
 
         list.appendChild(li);
       });
+    }
+
+    function editMovie(id) {
+      const movie = movies.find(m => m.id === id);
+      if (!movie) return;
+
+      document.querySelector("#title").value = movie.title;
+      document.querySelector("#director").value = movie.director;
+      document.querySelector("#genre").value = movie.genre;
+      document.querySelector("#rating").value = movie.rating;
+
+      editId = id;
+
+      document.querySelector("#saveBtn").textContent = "영화 수정";
     }
 
     window.addEventListener("load", function() {
@@ -64,15 +83,30 @@
       movieForm.addEventListener("submit", function(e) {
         e.preventDefault();
 
-        const newMovie = {
-          id: movies.length + 1,
-          title: title.value,
-          director: director.value,
-          genre: genre.value,
-          rating: parseFloat(rating.value)
-        };
+        if (editId === null) {
+          const newMovie = {
+            id: movies.length + 1,
+            title: title.value,
+            director: director.value,
+            genre: genre.value,
+            rating: parseFloat(rating.value)
+          };
 
-        movies.push(newMovie);
+          movies.push(newMovie);
+
+        } else {
+          const movie = movies.find(m => m.id === editId);
+
+          if (movie) {
+            movie.title = title.value;
+            movie.director = director.value;
+            movie.genre = genre.value;
+            movie.rating = parseFloat(rating.value);
+          }
+
+          editId = null;
+          document.querySelector("#saveBtn").textContent = "영화 추가";
+        }
 
         render();
         movieForm.reset();
